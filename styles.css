@@ -6,6 +6,8 @@
     --ink-faint:#8a919c;
     --accent:#0e5a52;
     --accent-soft:#e4f0ee;
+    --accent-2:#b8752e;
+    --accent-2-soft:#f7ecdd;
     --line:#e3e6ea;
     --radius:10px;
     --maxw:920px;
@@ -68,15 +70,39 @@
   nav.top .links::-webkit-scrollbar{ display:none; }
   nav.top .links a{
     font-size:.88rem; font-weight:500; color:var(--ink-soft); text-decoration:none;
-    white-space:nowrap; padding:4px 0; border-bottom:2px solid transparent;
+    white-space:nowrap; padding:6px 10px; border-radius:6px;
+    transition:background-color .15s, color .15s;
   }
-  nav.top .links a:hover{ color:var(--ink); border-bottom-color:var(--accent); }
+  nav.top .links a:hover{ color:var(--accent); background:var(--accent-soft); }
 
   /* ---------------- HERO ---------------- */
-  header.hero{ padding:76px 0 56px; border-bottom:1px solid var(--line); }
-  .hero-grid{
-    display:grid; grid-template-columns:1fr auto; gap:32px; align-items:center;
+  header.hero{ border-bottom:1px solid var(--line); overflow:hidden; }
+
+  .cover-photo{
+    width:100%; height:auto; background:var(--accent-soft);
+    overflow:hidden;
   }
+  .cover-photo img{
+    width:100%; height:auto;
+    object-fit:contain; /* shows the FULL cover image, never crops it */
+    background:var(--accent-soft);
+    display:block;
+  }
+
+  .hero-content{
+    padding:0 24px 32px;
+  }
+  .profile-photo{
+    display:block;
+    margin-top:-64px; /* pulls the photo up to overlap the cover, then flows normally below */
+    width:150px; height:190px;
+    object-fit:contain; /* shows the FULL photo, never crops it */
+    background:var(--bg);
+    border:4px solid var(--bg);
+    border-radius:12px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.12);
+  }
+  .hero-text{ margin-top:22px; }
   .hero h1{ font-size:clamp(2.1rem, 5vw, 3rem); }
   .hero .tagline{
     margin-top:12px; font-size:1.1rem; color:var(--ink-soft); max-width:46ch; font-weight:400;
@@ -89,28 +115,36 @@
     padding:8px 14px; border:1px solid var(--line); border-radius:999px;
     font-size:.85rem; font-weight:500; color:var(--ink); text-decoration:none;
     background:var(--bg-soft);
+    transition:background-color .15s, border-color .15s, color .15s, transform .15s;
   }
-  .pill:hover{ border-color:var(--accent); color:var(--accent); text-decoration:none; }
-  .hero .photo-slot{
-    width:112px; height:112px; border-radius:50%;
-    background:var(--accent-soft); border:1px solid var(--line);
-    object-fit:cover;
-    flex-shrink:0;
+  .pill:hover{
+    border-color:var(--accent); color:var(--accent); background:var(--accent-soft);
+    text-decoration:none; transform:translateY(-1px);
   }
 
   /* ---------------- SECTIONS ---------------- */
   section{ padding:60px 0; border-bottom:1px solid var(--line); }
   section:last-of-type{ border-bottom:none; }
-  section h2{ font-size:1.6rem; margin-bottom:28px; }
+  section h2{
+    font-size:1.6rem; margin-bottom:28px; padding-bottom:14px; position:relative;
+  }
+  section h2::after{
+    content:""; position:absolute; left:0; bottom:0; width:44px; height:3px;
+    background:linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-radius:2px;
+  }
   .lede{ max-width:64ch; color:var(--ink-soft); }
 
   /* ---------------- TIMELINE ---------------- */
   .timeline{ list-style:none; margin:0; padding:0; }
   .timeline li{
     display:grid; grid-template-columns:130px 1fr; gap:24px;
-    padding:20px 0; border-top:1px solid var(--line);
+    padding:20px 16px; margin:0 -16px; border-top:1px solid var(--line);
+    border-radius:8px; border-left:3px solid transparent;
+    transition:background-color .15s, border-left-color .15s;
   }
-  .timeline li:first-child{ border-top:none; padding-top:0; }
+  .timeline li:first-child{ border-top:none; }
+  .timeline li:hover{ background:var(--bg-soft); border-left-color:var(--accent); }
   .timeline .years{ font-size:.85rem; font-weight:500; color:var(--ink-faint); padding-top:3px; }
   .timeline .role{ font-weight:600; font-size:1.02rem; }
   .timeline .org{ color:var(--ink-soft); margin-top:2px; }
@@ -123,13 +157,18 @@
   }
   .pub-group:first-child h3{ margin-top:0; }
   .pub{
-    display:grid; grid-template-columns:30px 1fr; gap:16px;
-    padding:16px 0; border-top:1px solid var(--line);
+    display:grid; grid-template-columns:32px 1fr; gap:16px;
+    padding:16px; margin:0 -16px; border-top:1px solid var(--line);
+    border-radius:8px; border-left:3px solid transparent;
+    transition:background-color .15s, border-left-color .15s;
   }
-  .pub:first-of-type{ border-top:none; padding-top:0; }
+  .pub:first-of-type{ border-top:none; }
+  .pub:hover{ background:var(--bg-soft); border-left-color:var(--accent-2); }
   .pub .num{
-    font-family:'IBM Plex Mono', monospace; font-size:.78rem; color:var(--accent); font-weight:500;
-    padding-top:2px;
+    width:26px; height:26px; border-radius:50%;
+    background:var(--accent-soft); color:var(--accent);
+    font-family:'IBM Plex Mono', monospace; font-size:.72rem; font-weight:600;
+    display:flex; align-items:center; justify-content:center;
   }
   .pub .cite{ font-size:.97rem; }
   .pub .venue{ color:var(--ink-soft); font-style:italic; }
@@ -137,15 +176,29 @@
   .pub .meta a{ color:var(--accent); }
 
   /* ---------------- PATENTS ---------------- */
-  .patent{ padding:16px 0; border-top:1px solid var(--line); }
-  .patent:first-of-type{ border-top:none; padding-top:0; }
-  .patent .id{ font-family:'IBM Plex Mono', monospace; font-size:.75rem; color:var(--accent); margin-bottom:4px; }
+  .patent{
+    padding:16px; margin:0 -16px; border-top:1px solid var(--line);
+    border-radius:8px; border-left:3px solid transparent;
+    transition:background-color .15s, border-left-color .15s;
+  }
+  .patent:first-of-type{ border-top:none; }
+  .patent:hover{ background:var(--bg-soft); border-left-color:var(--accent-2); }
+  .patent .id{
+    display:inline-block; font-family:'IBM Plex Mono', monospace; font-size:.72rem;
+    color:var(--accent-2); background:var(--accent-2-soft); padding:3px 8px; border-radius:5px;
+    margin-bottom:8px;
+  }
 
   /* ---------------- SKILLS ---------------- */
   .skills-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:16px; }
   .skill-card{
     background:var(--bg-soft); border:1px solid var(--line); border-radius:var(--radius);
     padding:20px 22px;
+    transition:transform .15s, box-shadow .15s, border-color .15s;
+  }
+  .skill-card:hover{
+    transform:translateY(-3px); border-color:var(--accent);
+    box-shadow:0 8px 20px rgba(14,90,82,0.12);
   }
   .skill-card h3{
     font-family:'IBM Plex Mono', monospace; font-size:.72rem; letter-spacing:.1em;
@@ -155,9 +208,15 @@
 
   /* ---------------- AWARDS ---------------- */
   .awards{ list-style:none; margin:0; padding:0; }
-  .awards li{ display:grid; grid-template-columns:80px 1fr; gap:24px; padding:16px 0; border-top:1px solid var(--line); }
-  .awards li:first-child{ border-top:none; padding-top:0; }
-  .awards .year{ font-size:.85rem; font-weight:500; color:var(--ink-faint); }
+  .awards li{
+    display:grid; grid-template-columns:80px 1fr; gap:24px;
+    padding:16px; margin:0 -16px; border-top:1px solid var(--line);
+    border-radius:8px; border-left:3px solid transparent;
+    transition:background-color .15s, border-left-color .15s;
+  }
+  .awards li:first-child{ border-top:none; }
+  .awards li:hover{ background:var(--bg-soft); border-left-color:var(--accent-2); }
+  .awards .year{ font-size:.85rem; font-weight:600; color:var(--accent-2); }
 
   /* ---------------- REFERENCES ---------------- */
   .refs{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:20px; }
@@ -173,9 +232,9 @@
 
   /* ---------------- RESPONSIVE ---------------- */
   @media (max-width:640px){
-    header.hero{ padding:56px 0 40px; }
-    .hero-grid{ grid-template-columns:1fr; }
-    .hero .photo-slot{ order:-1; width:76px; height:76px; }
+    .cover-photo{ height:150px; }
+    .profile-photo{ margin-top:-46px; width:110px; height:140px; }
+    .hero-text{ margin-top:18px; }
     .timeline li, .awards li{ grid-template-columns:1fr; gap:4px; }
     .timeline .years, .awards .year{ padding-top:0; }
     section{ padding:44px 0; }
